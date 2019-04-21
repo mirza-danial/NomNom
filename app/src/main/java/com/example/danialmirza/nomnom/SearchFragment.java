@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import com.google.android.gms.location.LocationListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,12 +13,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,10 +29,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 
 /**
@@ -39,22 +47,38 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment implements OnMapReadyCallback
-        ,GoogleApiClient.ConnectionCallbacks
-        ,GoogleApiClient.OnConnectionFailedListener
+public class SearchFragment extends Fragment implements OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener
+
 {
+    //vars
+    GoogleMap mMap;
+    MapView mMapView;
+    View mView;
+    private boolean mLocPermGranted = false;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    private GoogleApiClient client;
+    private LocationRequest locationRequest;
+    private Location lastLocation;
+    private Marker currentLocationMarker;
+
+
+    private static final String FINE_LOCATION =Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION =Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final String TAG = "MAP FRAGMENT:";
+    private static final float DEFAULT_ZOOM = 15f;
+
+    public static final int REQUEST_LOCATION_CODE = 99;
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-    GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient;
 
-    private double latitude,longitude;
-    private Location mLastLocation;
-    private Marker mMarker;
-    private LocationRequest mLocationRequest;
-
-    IGoogleAPIService mService;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -87,6 +111,79 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback
         return fragment;
     }
 
+
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: Initializing Map");
+        MapsInitializer.initialize(getContext());
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            buildGoogleApiClient();
+            mMap.setMyLocationEnabled(true);
+        }
+
+    }
+
+
+    protected synchronized void buildGoogleApiClient() {
+        client = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        client.connect();
+
+    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode)
+        {
+            case REQUEST_LOCATION_CODE:
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) !=  PackageManager.PERMISSION_GRANTED)
+                    {
+                        if(client == null)
+                        {
+                            buildGoogleApiClient();
+                        }
+                        mMap.setMyLocationEnabled(true);
+                    }
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Permission Denied" , Toast.LENGTH_LONG).show();
+                }
+        }
+    }
+
+    public  boolean checkLocationPermission(){
+        if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)  != PackageManager.PERMISSION_GRANTED )
+        {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+                ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.ACCESS_FINE_LOCATION },REQUEST_LOCATION_CODE);
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(getActivity(),new String[] {Manifest.permission.ACCESS_FINE_LOCATION },REQUEST_LOCATION_CODE);
+            }
+            return false;
+
+        }
+        else
+        return true;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,10 +208,24 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback
         }
     }
 
+    private void initMap(){
+        mMapView = (MapView) mView.findViewById(R.id.map);
+        if(mMapView !=null)
+        {
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            checkLocationPermission();
+        }
         super.onViewCreated(view, savedInstanceState);
-
+        initMap();
     }
 
     @Override
@@ -135,36 +246,47 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onLocationChanged(Location location) {
+        lastLocation = location;
 
-        //init Google Play Services
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                buildGoogleApiClient();
-                mMap.setMyLocationEnabled(true);
-            }
-
+        if(currentLocationMarker !=null)
+        {
+            currentLocationMarker.remove();
         }
 
-        else{
-            buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+        LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        markerOptions.position(latLng);
+        markerOptions.title("current location");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+        currentLocationMarker = mMap.addMarker(markerOptions);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomBy(DEFAULT_ZOOM));
+
+        if (client != null)
+        {
+            LocationServices.FusedLocationApi.removeLocationUpdates(client,this);
         }
+
     }
-    private void buildGoogleApiClient()
-    {
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
+
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(100);
+        locationRequest.setFastestInterval(1000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
+
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED)
+        {
+            LocationServices.FusedLocationApi.requestLocationUpdates(client, locationRequest, this);
+        }
     }
 
     @Override
@@ -192,4 +314,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
+
