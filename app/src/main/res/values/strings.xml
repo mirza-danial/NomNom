@@ -6,4 +6,42 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Dialog Names -->
+    <string name="dialog_select_photo">SelectPhoto</string>
+
+    <!--Firebase NomNomDatabase nodes -->
+    <string name="node_users">users</string>
+    <string name="node_posts">posts</string>
+    <string name="node_userposts">user-posts</string>
+    <string name="node_restaurants">restaurants</string>
+
+    <!--NomNomDatabase tables -->
+    <string name="table_restaurants">restaurants</string>
+
+    <!--Facebook -->
+    <string name="facebook_app_id">764164040718279</string>
+
+    <!--Intent data strings-->
+    <string name="intent_restaurant_data">restaurantdata</string>
+
+    <!-- Asad's uncommented work :( -->
+    <string name="biometric_failed">Fingerprint not recognized.</string>
+
+    <string name="biometric_title">Fingerprint Verification</string>
+    <string name="biometric_subtitle">Login to your NomNom account.</string>
+    <string name="biometric_description">Place your finger on the fingerprint sensor to verify your identity.</string>
+    <string name="biometric_negative_button_text">CANCEL</string>
+
+
+    <string name="biometric_error_sdk_not_supported">Sdk version not supported.</string>
+    <string name="biometric_error_hardware_not_supported">Device does not support biometric authentication.</string>
+    <string name="biometric_error_fingerprint_not_available">Fingerprint is not registered in device. Please register fingerprint through device settings.</string>
+    <string name="biometric_error_permission_not_granted">Permission is not granted by user.</string>
+    <string name="biometric_failure">Login Not Successful!</string>
+    <string name="biometric_cancelled">Authentication cancelled by user.</string>
+    <string name="biometric_success">Login Successful!</string>
+
+    <string name="fb_login_protocol_scheme">fb2356438518011518</string>
+
 </resources>

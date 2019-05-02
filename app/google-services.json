@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "962610363127",
+    "firebase_url": "https://nomnomfirebasetest.firebaseio.com",
+    "project_id": "nomnomfirebasetest",
+    "storage_bucket": "nomnomfirebasetest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962610363127:android:d8c022edd5f0d132",
+        "android_client_info": {
+          "package_name": "com.example.danialmirza.nomnom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962610363127-a5n26pqg4erahgu6n3522dh332baaihb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.danialmirza.nomnom",
+            "certificate_hash": "6f6d4f175db673a408b3d9771d70027274336aaf"
+          }
+        },
+        {
+          "client_id": "962610363127-fc4820858c2g8lid6s4vf7obuhmm53s0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEIW-kR4QMdsp4bnHJktJGG9M-bJozDlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962610363127-fc4820858c2g8lid6s4vf7obuhmm53s0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
