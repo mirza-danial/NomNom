@@ -1,4 +1,4 @@
 <vector android:height="30dp" android:viewportHeight="128"
     android:viewportWidth="128" android:width="30dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@color/lightGrey" android:name="Shape 1" android:pathData="m77.77 99.01v-36.19h14.23l-27.5 -32.82l-27.5 32.82h14.24v36.19h26.54z"/>
+    <path android:fillColor="#eee" android:name="Shape 1" android:pathData="m77.77 99.01v-36.19h14.23l-27.5 -32.82l-27.5 32.82h14.24v36.19h26.54z"/>
 </vector>

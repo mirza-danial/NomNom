@@ -2,16 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/lightGrey">
+    android:layout_height="match_parent">
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/postbackground"
-        android:paddingBottom="0dp">
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/relLayout1"
@@ -19,36 +18,36 @@
             android:layout_height="50dp">
 
             <TextView
-                android:id="@+id/txt_location"
+                android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/img_profile"
-                android:layout_marginLeft="2dp"
-                android:layout_marginTop="18dp"
-                android:layout_toRightOf="@+id/img_profile"
+                android:layout_alignTop="@+id/profile_photo"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="21dp"
+                android:layout_toRightOf="@+id/profile_photo"
                 android:drawableLeft="@drawable/ic_location_on_black_24dp"
                 android:text="Location"
                 android:textColor="@color/black"
                 android:textSize="8sp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_profile"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:id="@+id/profile_photo"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="20dp"
-                app:civ_border_color="@color/lightGrey"
-                app:civ_border_width="0.5dp"/>
+                app:civ_border_color="@color/black"
+                app:civ_border_width="0.5dp" />
 
 
             <TextView
-                android:id="@+id/txt_username"
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/img_profile"
+                android:layout_alignTop="@+id/profile_photo"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@+id/profile_photo"
                 android:text="User Name"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
@@ -56,29 +55,24 @@
 
         </RelativeLayout>
 
-        <com.example.danialmirza.nomnom.Utils.SquareImageView
-            android:id="@+id/img_post"
+        <com.example.danialmirza.nomnom.others.SquareImageView
+            android:id="@+id/post_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/relLayout1"
-            android:clickable="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
             android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:id="@+id/relLayout2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/img_post"
+            android:layout_below="@+id/post_image"
             android:background="@color/white">
 
             <RelativeLayout
                 android:id="@+id/upvote"
-                android:layout_marginLeft="10dp"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
                 android:background="@color/white">
 
                 <ImageView
@@ -86,7 +80,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true"
-
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/ic_upvote_selected"
                     android:visibility="invisible" />
 
@@ -95,29 +89,19 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true"
-
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/ic_upvote_unselected"
                     android:visibility="visible" />
 
             </RelativeLayout>
-            <TextView
-                android:id="@+id/num_upvotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/upvote"
-                android:layout_centerVertical="true"
-                android:text="0"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                />
 
             <RelativeLayout
                 android:id="@+id/downvote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_toRightOf="@+id/num_upvotes"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/upvote"
                 android:background="@color/white">
 
                 <ImageView
@@ -125,6 +109,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/ic_downvote_selected"
                     android:visibility="invisible" />
 
@@ -134,21 +119,13 @@
                     android:layout_height="35dp"
                     android:layout_alignTop="@+id/image_downvote_selected"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp"
                     android:src="@drawable/ic_downvote_unselected"
                     android:visibility="visible" />
 
 
             </RelativeLayout>
-            <TextView
-                android:id="@+id/num_downvotes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/downvote"
-                android:layout_centerVertical="true"
-                android:text="0"
-                android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                />
+
 
         </RelativeLayout>
 

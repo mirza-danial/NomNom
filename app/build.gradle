@@ -21,60 +21,26 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    // implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:support-v4:28.0.0'
 
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
+
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'  //16.1.0
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
+
+    implementation 'com.google.firebase:firebase-core:16.0.8' //16.0.1
+    //implementation 'com.google.firebase:firebase-database:16.0.5' //added later
+    //implementation 'com.google.firebase:firebase-auth:16.0.5' //added later
+
+    //implementation 'com.google.android.gms:play-services-ads:17.1.1' // added later
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    // google play services maps
-    implementation 'com.google.android.gms:play-services-maps:16.1.0'  //16.1.0
-
-    // google play services location
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
-
-    // circlular image
     implementation 'de.hdodenhof:circleimageview:2.1.0'
 
-    //firebase core
-    implementation 'com.google.firebase:firebase-core:16.0.8' //16.0.1
-
-    //firebase database
-    implementation 'com.google.firebase:firebase-database:16.1.0'
-
-    //firebase authentication
-    implementation 'com.google.firebase:firebase-auth:16.2.1'//16.2.1
-
-    //firebase storage
-    implementation 'com.google.firebase:firebase-storage:16.1.0'
-
-    //Universal image loader
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
-    //ExifInterface support
-    implementation "com.android.support:exifinterface:26.+"
-
-    //Picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
-    //Room API
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-
-    //Firebase UI
-    implementation 'com.firebaseui:firebase-ui-database:4.3.2'
-
-    //Facebook
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation 'com.facebook.android:facebook-share:[4,5)'
-
-    implementation 'com.google.android.gms:play-services-base:16.1.0'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
 
 }

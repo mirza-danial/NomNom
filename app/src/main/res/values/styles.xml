@@ -1,26 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowDisablePreview">true</item>
-    </style>
-
-    <style name="WhiteTextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorHint">@color/lightGrey</item>
-    </style>
-
-    <style name="AppTheme.Launcher">
-        <item name="android:windowBackground">@drawable/background_splash</item>
-        <!--<item name="android:windowDisablePreview">true</item>-->
-    </style>
-
-    <style parent="Theme.AppCompat.Light.Dialog.Alert" name="AlertDialogTheme">
-        <item name="colorAccent">@color/orange</item>
     </style>
 
 </resources>

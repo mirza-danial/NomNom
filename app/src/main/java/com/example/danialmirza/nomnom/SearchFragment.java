@@ -2,9 +2,9 @@ package com.example.danialmirza.nomnom;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import com.google.android.gms.location.LocationListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,15 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.danialmirza.nomnom.Database.NomNomDatabase;
-import com.example.danialmirza.nomnom.model.Restaurant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,14 +29,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 
 /**
@@ -128,26 +124,10 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback,
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-        setRestaurantsMarkers();
 
     }
 
-    void setRestaurantsMarkers()
-    {
 
-        NomNomDatabase Db = NomNomDatabase.getAppDatabase(getApplicationContext());
-        ArrayList<Restaurant> results = (ArrayList<Restaurant>) Db.restaurantDao().getAllRestaurants();
-
-        for (Restaurant res : results)
-        {
-            MarkerOptions markerOptions = new MarkerOptions();
-
-            markerOptions.position(res.getLatLng());
-            markerOptions.title(res.getName());
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            mMap.addMarker(markerOptions);
-        }
-    }
     protected synchronized void buildGoogleApiClient() {
         client = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(this)
@@ -176,7 +156,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback,
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
-                        Toast.makeText(getContext(),"Permission Granted",Toast.LENGTH_LONG).show();
                     }
                 }
                 else
@@ -236,7 +215,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback,
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
-
         }
     }
 
@@ -248,16 +226,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback,
         }
         super.onViewCreated(view, savedInstanceState);
         initMap();
-        TextView txt_search = view.findViewById(R.id.search);
-        txt_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Open new Activity to display restaurants
-                Intent i =  new Intent(getContext(),SearchActivity.class);
-                i.putExtra("results",false);
-                getActivity().startActivity(i);
-            }
-        });
     }
 
     @Override
